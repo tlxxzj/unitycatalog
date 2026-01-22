@@ -2605,6 +2605,9 @@ components:
             The API client is advised to cache the credential given this expiration time.
           type: integer
           format: int64
+        endpoint:
+          description: Optional S3 compatible endpoint URL
+          type: string
     PathOperation:
       enum:
         - UNKNOWN_PATH_OPERATION

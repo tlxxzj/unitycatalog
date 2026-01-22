@@ -90,6 +90,12 @@ public class DeltaKernelUtils {
       conf.set("fs.s3a.session.token", awsTempCredentials.getSessionToken());
       conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem");
       conf.set("fs.s3a.path.style.access", "true");
+
+      if (temporaryCredentials.getEndpoint() != null
+          && !temporaryCredentials.getEndpoint().isEmpty()) {
+        conf.set("fs.s3a.endpoint", temporaryCredentials.getEndpoint());
+        LOGGER.info("Using S3-compatible endpoint: " + temporaryCredentials.getEndpoint());
+      }
     } else if (scheme.equals(Constants.URI_SCHEME_FILE)) {
       conf.set("fs.file.impl", "org.apache.hadoop.fs.LocalFileSystem");
     } else {

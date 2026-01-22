@@ -132,11 +132,18 @@ public class CredPropsUtil {
 
   private static Map<String, String> s3FixedCredProps(TemporaryCredentials tempCreds) {
     AwsCredentials awsCred = tempCreds.getAwsTempCredentials();
-    return new S3PropsBuilder()
-        .set("fs.s3a.access.key", awsCred.getAccessKeyId())
-        .set("fs.s3a.secret.key", awsCred.getSecretAccessKey())
-        .set("fs.s3a.session.token", awsCred.getSessionToken())
-        .build();
+    S3PropsBuilder builder = new S3PropsBuilder()
+      .set("fs.s3a.access.key", awsCred.getAccessKeyId())
+      .set("fs.s3a.secret.key", awsCred.getSecretAccessKey())
+      .set("fs.s3a.session.token", awsCred.getSessionToken());
+
+    // Set fs.s3a.endpoint for S3-compatible storage (e.g., MinIO)
+    if (tempCreds.getEndpoint() != null && !tempCreds.getEndpoint().isEmpty()) {
+      builder.set("fs.s3a.path.style.access", "true");
+      builder.set("fs.s3a.endpoint", tempCreds.getEndpoint());
+    }
+
+    return builder.build();
   }
 
   private static S3PropsBuilder s3TempCredPropsBuilder(
@@ -157,6 +164,12 @@ public class CredPropsUtil {
     if (tempCreds.getExpirationTime() != null) {
       builder.set(UCHadoopConf.S3A_INIT_CRED_EXPIRED_TIME,
           String.valueOf(tempCreds.getExpirationTime()));
+    }
+
+    // Set fs.s3a.endpoint for S3-compatible storage (e.g., MinIO)
+    if (tempCreds.getEndpoint() != null && !tempCreds.getEndpoint().isEmpty()) {
+      builder.set("fs.s3a.path.style.access", "true");
+      builder.set("fs.s3a.endpoint", tempCreds.getEndpoint());
     }
 
     return builder;

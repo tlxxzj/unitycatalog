@@ -202,6 +202,7 @@ public class ServerProperties {
     AWS_S3_ACCESS_KEY("aws.s3.accessKey"),
     AWS_S3_SECRET_KEY("aws.s3.secretKey"),
     AWS_S3_SESSION_TOKEN("aws.s3.sessionToken"),
+    AWS_S3_ENDPOINT("aws.s3.endpoint"),
     AWS_REGION("aws.region");
     // The is not an exhaustive list. Some property keys like s3.bucketPath.0 with a numbering
     // suffix is not included. They are only accessed internally from functions like
@@ -295,6 +296,7 @@ public class ServerProperties {
       String secretKey = getProperty("s3.secretKey." + i);
       String sessionToken = getProperty("s3.sessionToken." + i);
       String credentialsGenerator = getProperty("s3.credentialsGenerator." + i);
+      String endpoint = getProperty("s3.endpoint." + i);
       if ((bucketPath == null || region == null || awsRoleArn == null)
           && (accessKey == null || secretKey == null || sessionToken == null)) {
         break;
@@ -308,6 +310,7 @@ public class ServerProperties {
               .secretKey(secretKey)
               .sessionToken(sessionToken)
               .credentialsGenerator(credentialsGenerator)
+              .endpoint(endpoint)
               .build();
       s3BucketConfigMap.put(bucketPath, s3StorageConfig);
       i++;

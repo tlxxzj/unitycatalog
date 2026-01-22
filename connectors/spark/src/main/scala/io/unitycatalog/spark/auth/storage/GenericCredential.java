@@ -18,7 +18,8 @@ public class GenericCredential {
       String accessKey,
       String secretKey,
       String sessionToken,
-      long expiredTimeMillis) {
+      long expiredTimeMillis,
+      String endpoint) {
     // Initialize the aws credentials.
     AwsCredentials awsCredentials = new AwsCredentials();
     awsCredentials.setAccessKeyId(accessKey);
@@ -29,6 +30,10 @@ public class GenericCredential {
     TemporaryCredentials tempCred = new TemporaryCredentials();
     tempCred.setAwsTempCredentials(awsCredentials);
     tempCred.setExpirationTime(expiredTimeMillis);
+
+    if(endpoint != null && !endpoint.isEmpty()) {
+      tempCred.setEndpoint(endpoint);
+    }
 
     return new GenericCredential(tempCred);
   }

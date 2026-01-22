@@ -1,6 +1,7 @@
 package io.unitycatalog.server.service.credential.aws;
 
 import io.unitycatalog.server.service.credential.CredentialContext;
+import java.net.URI;
 import java.time.Duration;
 import java.util.UUID;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -8,6 +9,7 @@ import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sts.StsClient;
+import software.amazon.awssdk.services.sts.StsClientBuilder;
 import software.amazon.awssdk.services.sts.model.Credentials;
 
 /**
@@ -52,14 +54,17 @@ public interface CredentialsGenerator {
     private final String awsRoleArn;
 
     public StsCredentialsGenerator(
-        String region, String accessKey, String secretKey, String awsRoleArn) {
-      this.stsClient =
+        String region, String accessKey, String secretKey, String awsRoleArn, String endpoint) {
+      StsClientBuilder builder =
           StsClient.builder()
               .region(Region.of(region))
               .credentialsProvider(
                   StaticCredentialsProvider.create(
-                      AwsBasicCredentials.create(accessKey, secretKey)))
-              .build();
+                      AwsBasicCredentials.create(accessKey, secretKey)));
+      if (endpoint != null && !endpoint.isEmpty()) {
+        builder.endpointOverride(URI.create(endpoint));
+      }
+      this.stsClient = builder.build();
       this.awsRoleArn = awsRoleArn;
     }
 

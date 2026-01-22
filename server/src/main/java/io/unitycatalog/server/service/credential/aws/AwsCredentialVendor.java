@@ -36,7 +36,11 @@ public class AwsCredentialVendor {
 
     if (config.getAccessKey() != null && !config.getAccessKey().isEmpty()) {
       return new CredentialsGenerator.StsCredentialsGenerator(
-          config.getRegion(), config.getAccessKey(), config.getSecretKey(), config.getAwsRoleArn());
+          config.getRegion(),
+          config.getAccessKey(),
+          config.getSecretKey(),
+          config.getAwsRoleArn(),
+          config.getEndpoint());
     } else {
       return new CredentialsGenerator.StsCredentialsGenerator(
           config.getRegion(), config.getAwsRoleArn());
@@ -56,5 +60,13 @@ public class AwsCredentialVendor {
                 credGenerator == null ? createCredentialsGenerator(config) : credGenerator);
 
     return generator.generate(context);
+  }
+
+  public String getEndpoint(CredentialContext context) {
+    S3StorageConfig config = s3Configurations.get(context.getStorageBase());
+    if (config == null) {
+      return null;
+    }
+    return config.getEndpoint();
   }
 }

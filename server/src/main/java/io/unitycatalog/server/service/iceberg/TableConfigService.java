@@ -15,6 +15,7 @@ import org.apache.iceberg.gcp.GCPProperties;
 import software.amazon.awssdk.services.sts.model.Credentials;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -72,11 +73,17 @@ public class TableConfigService {
     S3StorageConfig s3StorageConfig = s3Configurations.get(context.getStorageBase());
     Credentials awsCredential = cloudCredentialVendor.vendAwsCredential(context);
 
-    return Map.of(
-        S3FileIOProperties.ACCESS_KEY_ID, awsCredential.accessKeyId(),
-        S3FileIOProperties.SECRET_ACCESS_KEY, awsCredential.secretAccessKey(),
-        S3FileIOProperties.SESSION_TOKEN, awsCredential.sessionToken(),
-        AwsClientProperties.CLIENT_REGION, s3StorageConfig.getRegion());
+    HashMap<String, String> config = new HashMap<>();
+    config.put(S3FileIOProperties.ACCESS_KEY_ID, awsCredential.accessKeyId());
+    config.put(S3FileIOProperties.SECRET_ACCESS_KEY, awsCredential.secretAccessKey());
+    config.put(S3FileIOProperties.SESSION_TOKEN, awsCredential.sessionToken());
+    config.put(AwsClientProperties.CLIENT_REGION, s3StorageConfig.getRegion());
+
+    if(s3StorageConfig.getEndpoint() != null && !s3StorageConfig.getEndpoint().isEmpty()) {
+      config.put(S3FileIOProperties.ENDPOINT, s3StorageConfig.getEndpoint());
+    }
+
+    return config;
+
   }
 }
-

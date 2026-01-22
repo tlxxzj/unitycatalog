@@ -127,6 +127,10 @@ spec:
                 secretKeyRef:
                   name: {{ $config.credentialsSecretName | quote }}
                   key: secretKey
+          {{- if $config.endpoint }}
+            - name: S3_ENDPOINT_{{ $index }}
+              value: {{ $config.endpoint | quote }}
+          {{- end }}
           {{- end }}
           {{- range $index, $config := .Values.storage.credentials.adls }}
             - name: ADLS_TENANT_ID_{{ $index }}
