@@ -6,7 +6,7 @@ ARG HOME="/home/unitycatalog"
 
 FROM amazoncorretto:17-alpine3.23 as builder
 
-RUN apk add --no-cache bash gettext
+
 
 ARG HOME
 
@@ -16,10 +16,12 @@ WORKDIR $HOME
 
 COPY --parents dev/ build/ project/ examples/ server/ api/ clients/python/ version.sbt build.sbt ./
 
-RUN ./build/sbt -info clean package
-
-RUN mkdir -p $HOME/server/target/jars && \
-    cat $HOME/server/target/classpath | tr ':' '\n' | grep .jar | xargs -I {} cp {} $HOME/server/target/jars/
+RUN <<EOF
+apk add --no-cache bash gettext curl
+./build/sbt -info clean package
+mkdir -p $HOME/server/target/jars
+cat $HOME/server/target/classpath | tr ':' '\n' | grep .jar | xargs -I {} cp {} $HOME/server/target/jars/
+EOF
 
 # Small runtime image
 FROM amazoncorretto:17-alpine3.23 as runtime
