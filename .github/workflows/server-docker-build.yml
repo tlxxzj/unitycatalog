@@ -1,6 +1,9 @@
 name: Build and Push Docker Images - unitycatalog server
 
 on:
+  push:
+    branches:
+      - v0.3.1-s3-compatible
   workflow_dispatch: {}
 
 env:
