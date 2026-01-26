@@ -28,7 +28,7 @@ lazy val hadoopVersion = "3.4.0"
 // Library versions
 lazy val jacksonVersion = "2.17.0"
 lazy val openApiToolsJacksonBindNullableVersion = "0.2.6"
-lazy val log4jVersion = "2.24.3"
+lazy val log4jVersion = "2.25.3"
 val orgApacheHttpVersion = "4.5.14"
 
 lazy val commonSettings = Seq(
@@ -323,8 +323,17 @@ lazy val server = (project in file("server"))
       "com.linecorp.armeria" %  "armeria" % "1.28.4",
       "org.apache.commons" % "commons-lang3" % "3.19.0",
 
+      // Fix Vulnerabilities
+      "com.google.protobuf" % "protobuf-java" % "3.25.5",
+      "io.netty" % "netty-all" % "4.1.130.Final",
+      "net.minidev" % "json-smart" % "2.5.2",
+      "io.vertx" % "vertx-core" % "4.5.24",
+      "io.vertx" % "vertx-web" % "4.5.24",
+      "io.vertx" % "vertx-web-client" % "4.5.24",
+      "org.springframework" % "spring-expression" % "6.1.21",
+
       // Netty dependencies
-      "io.netty" % "netty-all" % "4.1.111.Final",
+      //"io.netty" % "netty-all" % "4.1.111.Final",
       "jakarta.annotation" % "jakarta.annotation-api" % "3.0.0" % Provided,
       // Jackson dependencies
       "com.fasterxml.jackson.core" % "jackson-annotations" % jacksonVersion,
@@ -365,9 +374,9 @@ lazy val server = (project in file("server"))
       "org.apache.iceberg" % "iceberg-gcp" % "1.9.1",
       "software.amazon.awssdk" % "s3" % "2.24.0",
       "software.amazon.awssdk" % "sts" % "2.24.0",
-      "io.vertx" % "vertx-core" % "4.3.5",
-      "io.vertx" % "vertx-web" % "4.3.5",
-      "io.vertx" % "vertx-web-client" % "4.3.5",
+      //"io.vertx" % "vertx-core" % "4.5.24",
+      //"io.vertx" % "vertx-web" % "4.5.24",
+      //"io.vertx" % "vertx-web-client" % "4.5.24",
 
       // Auth dependencies
       "com.unboundid.product.scim2" % "scim2-sdk-common" % "3.1.0",
@@ -375,7 +384,7 @@ lazy val server = (project in file("server"))
       "org.casbin" % "jdbc-adapter" % "2.7.0"
         exclude("com.microsoft.sqlserver", "mssql-jdbc")
         exclude("com.oracle.database.jdbc", "ojdbc6"),
-      "org.springframework" % "spring-expression" % "6.1.11",
+      //"org.springframework" % "spring-expression" % "6.1.11",
       "com.auth0" % "java-jwt" % "4.4.0",
       "com.auth0" % "jwks-rsa" % "0.22.1",
 
