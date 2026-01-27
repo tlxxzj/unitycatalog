@@ -6,8 +6,6 @@ ARG HOME="/home/unitycatalog"
 
 FROM amazoncorretto:17-alpine3.23 as builder
 
-
-
 ARG HOME
 
 ENV HOME=$HOME
@@ -35,6 +33,7 @@ ENV USERID=$USERID \
     HOME=$HOME
 
 RUN <<EOF
+apk upgrade --no-cache
 apk add --no-cache bash gettext curl
 addgroup -S -g $USERID $USER
 adduser -S -u $USERID -G $USER $USER
