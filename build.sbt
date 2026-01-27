@@ -330,7 +330,9 @@ lazy val server = (project in file("server"))
       "io.vertx" % "vertx-core" % "4.5.24",
       "io.vertx" % "vertx-web" % "4.5.24",
       "io.vertx" % "vertx-web-client" % "4.5.24",
-      "org.springframework" % "spring-expression" % "6.1.21",
+      "org.springframework" % "spring-expression" % "6.2.15",
+      "io.projectreactor.netty" % "reactor-netty-http" % "1.2.14",
+      "com.nimbusds" % "nimbus-jose-jwt" % "10.7",
 
       // Netty dependencies
       //"io.netty" % "netty-all" % "4.1.111.Final",
